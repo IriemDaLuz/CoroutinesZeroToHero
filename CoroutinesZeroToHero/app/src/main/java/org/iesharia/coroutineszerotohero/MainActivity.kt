@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import groovyjarjarpicocli.CommandLine.Help.Column
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,9 +26,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        var retrofit = RetrofitHelper.getInstance()
+        var apiService = RetrofitHelper.getInstance()
         lifecycleScope.launch(Dispatchers.IO) {
-            var resultado : Response<SuperHeroDataResponse> = retrofit.getSuperheroes("a")
+            var resultado : Response<List<Post>> = apiService.getPosts("a")
             withContext(Dispatchers.Main){
                 if (resultado.isSuccessful){
                     Log.i("ejemplo1", "$resultado")
@@ -41,7 +42,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoroutinesZeroToHeroTheme {
                 Surface{
-                    SuperheroList()
+                    //SuperheroList()
+                    PostList(posts)
                 }
             }
         }
@@ -49,9 +51,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SuperheroList() {
-
-    Text(
-        text = ""
-    )
-}
+//fun SuperheroList() {
+fun PostList(){
+    Column{
+        for post in PostList():
+            Text(
+                text = {post[title]}
+            )
+}}
